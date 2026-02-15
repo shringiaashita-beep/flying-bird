@@ -5,36 +5,38 @@
     <style>
         body {
             margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: skyblue;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
         }
 
         canvas {
-            border: 2px solid black;
+            border: 3px solid black;
             background: #70c5ce;
         }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="600" height="800"></canvas>
+<canvas id="gameCanvas" width="1000" height="1200"></canvas>
 
 <script>
+window.onload = function() {
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-let birdY = 200;
+let birdY = canvas.height / 2;
 let velocity = 0;
-let gravity = 0.5;
-let lift = -8;
+let gravity = 0.7;
+let lift = -12;
 
 function drawBird() {
     ctx.fillStyle = "yellow";
     ctx.beginPath();
-    ctx.arc(80, birdY, 15, 0, Math.PI * 2);
+    ctx.arc(100, birdY, 20, 0, Math.PI * 2);
     ctx.fill();
 }
 
@@ -44,13 +46,13 @@ function update() {
     velocity += gravity;
     birdY += velocity;
 
-    if (birdY > canvas.height - 15) {
-        birdY = canvas.height - 15;
+    if (birdY > canvas.height - 20) {
+        birdY = canvas.height - 20;
         velocity = 0;
     }
 
-    if (birdY < 15) {
-        birdY = 15;
+    if (birdY < 20) {
+        birdY = 20;
         velocity = 0;
     }
 
@@ -64,8 +66,15 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
+document.addEventListener("click", function() {
+    velocity = lift;
+});
+
 update();
-<link rel="stylesheet" href="style.css">
-<script src="script.js"></script>
+
+}
+</script>
+
 </body>
 </html>
+

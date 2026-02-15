@@ -1,17 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Flying Bird Game</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: skyblue;
+        }
+
+        canvas {
+            border: 2px solid black;
+            background: #70c5ce;
+        }
+    </style>
 </head>
 <body>
 
-<h1>🐦 Flying Bird Game</h1>
-<p>Press SPACE to Fly</p>
-
 <canvas id="gameCanvas" width="400" height="500"></canvas>
 
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let birdY = 200;
+let velocity = 0;
+let gravity = 0.5;
+let lift = -8;
+
+function drawBird() {
+    ctx.fillStyle = "yellow";
+    ctx.beginPath();
+    ctx.arc(80, birdY, 15, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    velocity += gravity;
+    birdY += velocity;
+
+    if (birdY > canvas.height - 15) {
+        birdY = canvas.height - 15;
+        velocity = 0;
+    }
+
+    if (birdY < 15) {
+        birdY = 15;
+        velocity = 0;
+    }
+
+    drawBird();
+    requestAnimationFrame(update);
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.code === "Space") {
+        velocity = lift;
+    }
+});
+
+update();
+<link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
 </body>
 </html>

@@ -39,8 +39,10 @@ let gameOver = false;
 // ==============================
 
 document.addEventListener("keydown", function (e) {
-    if (e.code === "Space" && !gameOver) {
+    if (e.key === " " || e.code === "Space") {
         bird.velocity = bird.lift;
+    }
+});
     }
 
     // Restart game
@@ -72,7 +74,15 @@ function createPipe() {
 
 function drawBird() {
     ctx.fillStyle = "yellow";
-    ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+    ctx.beginPath();
+    ctx.arc(
+        bird.x + bird.width / 2,
+        bird.y + bird.height / 2,
+        bird.width / 2,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
 }
 
 
@@ -94,6 +104,22 @@ function drawPipes() {
             pipe.width,
             pipe.bottom
         );
+    });
+}
+function createPipe() {
+
+    let minHeight = 50;  
+    let maxHeight = canvas.height - gap - 50;
+
+    let topHeight = Math.floor(
+        Math.random() * (maxHeight - minHeight) + minHeight
+    );
+
+    pipes.push({
+        x: canvas.width,
+        width: 50,
+        top: topHeight,
+        bottom: canvas.height - topHeight - gap
     });
 }
 

@@ -1,1 +1,67 @@
+/* =========================
+   1️⃣ Body Styling
+========================= */
 
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #87CEEB, #ffffff);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+
+/* =========================
+   2️⃣ Game Title
+========================= */
+
+.title {
+    margin-top: 15px;
+    font-size: 28px;
+    color: #333;
+}
+
+
+/* =========================
+   3️⃣ Canvas Styling
+========================= */
+
+canvas {
+    display: block;
+    margin: 20px auto;
+    background-color: #70c5ce; /* Sky color */
+    border: 3px solid #333;
+    border-radius: 10px;
+}
+
+
+/* =========================
+   4️⃣ Instructions Section
+========================= */
+
+.instructions {
+    font-size: 16px;
+    color: #222;
+    margin-top: 10px;
+}
+
+
+/* =========================
+   5️⃣ Responsive Design
+========================= */
+
+@media (max-width: 500px) {
+    canvas {
+        width: 90%;
+        height: auto;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .instructions {
+        font-size: 14px;
+    }
+}

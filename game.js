@@ -1,76 +1,80 @@
-// ==============================
-// 1️⃣ Canvas Setup (Game Engine)
-// ==============================
+// ===============================
+// 1️⃣ Canvas Setup
+// ===============================
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 1300;
-canvas.height = 1700;
+canvas.width = 400;
+canvas.height = 600;
 
 
-// ==============================
-// 2️⃣ Bird Object
-// ==============================
+// ===============================
+// 2️⃣ Bird Setup
+// ===============================
 
 let bird = {
     x: 80,
-    y: 200,
-    width: 30,
-    height: 30,
-    gravity: 0.5,
-    lift: -10,
+    y: 250,
+    width: 25,
+    height: 25,
+    gravity: 0.6,
+    lift: -12,
     velocity: 0
 };
 
 
-// ==============================
-// 3️⃣ Pipes Array
-// ==============================
+// ===============================
+// 3️⃣ Game Variables
+// ===============================
 
 let pipes = [];
-let gap = 150;
+let gap = 220;
 let score = 0;
 let gameOver = false;
 
 
-// ==============================
-// 4️⃣ Controls (Spacebar Jump)
-// ==============================
+// ===============================
+// 4️⃣ Keyboard Controls
+// ===============================
 
 document.addEventListener("keydown", function (e) {
-    if (e.key === " " || e.code === "Space") {
+
+    // Jump
+    if ((e.code === "Space" || e.key === " ") && !gameOver) {
         bird.velocity = bird.lift;
     }
-});
-    }
 
-    // Restart game
+    // Restart
     if (e.code === "Enter" && gameOver) {
         restartGame();
     }
 });
 
 
-// ==============================
+// ===============================
 // 5️⃣ Create Pipes
-// ==============================
+// ===============================
 
 function createPipe() {
-    let topHeight = Math.random() * 300;
+
+    let minHeight = 50;
+    let maxHeight = canvas.height - gap - 50;
+
+    let topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
 
     pipes.push({
         x: canvas.width,
+        width: 60,
         top: topHeight,
-        bottom: canvas.height - topHeight - gap,
-        width: 50
+        bottom: canvas.height - topHeight - gap
     });
 }
 
 
-// ==============================
-// 6️⃣ Draw Bird
-// ==============================
+// ===============================
+// 6️⃣ Draw Bird (Circle)
+// ===============================
 
 function drawBird() {
     ctx.fillStyle = "yellow";
@@ -86,14 +90,16 @@ function drawBird() {
 }
 
 
-// ==============================
+// ===============================
 // 7️⃣ Draw Pipes
-// ==============================
+// ===============================
 
 function drawPipes() {
+
     ctx.fillStyle = "green";
 
     pipes.forEach(pipe => {
+
         // Top pipe
         ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
 
@@ -106,29 +112,14 @@ function drawPipes() {
         );
     });
 }
-function createPipe() {
-
-    let minHeight = 50;  
-    let maxHeight = canvas.height - gap - 170;
-
-    let topHeight = Math.floor(
-        Math.random() * (maxHeight - minHeight) + minHeight
-    );
-
-    pipes.push({
-        x: canvas.width,
-        width: 50,
-        top: topHeight,
-        bottom: canvas.height - topHeight - gap
-    });
-}
 
 
-// ==============================
+// ===============================
 // 8️⃣ Collision Detection
-// ==============================
+// ===============================
 
 function checkCollision(pipe) {
+
     if (
         bird.x < pipe.x + pipe.width &&
         bird.x + bird.width > pipe.x &&
@@ -140,9 +131,9 @@ function checkCollision(pipe) {
 }
 
 
-// ==============================
+// ===============================
 // 9️⃣ Draw Score
-// ==============================
+// ===============================
 
 function drawScore() {
     ctx.fillStyle = "black";
@@ -151,26 +142,12 @@ function drawScore() {
 }
 
 
-// ==============================
-// 🔟 Game Over Screen
-// ==============================
-
-function drawGameOver() {
-    ctx.fillStyle = "red";
-    ctx.font = "30px Arial";
-    ctx.fillText("Game Over!", 100, 250);
-
-    ctx.font = "18px Arial";
-    ctx.fillText("Press Enter to Restart", 90, 300);
-}
-
-
-// ==============================
-// 1️⃣1️⃣ Restart Game
-// ==============================
+// ===============================
+// 🔟 Restart Game
+// ===============================
 
 function restartGame() {
-    bird.y = 200;
+    bird.y = 250;
     bird.velocity = 0;
     pipes = [];
     score = 0;
@@ -178,13 +155,12 @@ function restartGame() {
 }
 
 
-// ==============================
-// 1️⃣2️⃣ Game Loop (Main Engine)
-// ==============================
+// ===============================
+// 1️⃣1️⃣ Game Loop
+// ===============================
 
 function update() {
 
-    // Clear screen
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!gameOver) {
@@ -192,6 +168,12 @@ function update() {
         // Bird physics
         bird.velocity += bird.gravity;
         bird.y += bird.velocity;
+
+        // Prevent going out of screen
+        if (bird.y < 0) bird.y = 0;
+        if (bird.y + bird.height > canvas.height) {
+            gameOver = true;
+        }
 
         // Create pipes randomly
         if (Math.random() < 0.02) {
@@ -201,11 +183,8 @@ function update() {
         // Move pipes
         pipes.forEach(pipe => {
             pipe.x -= 2;
-
-            // Check collision
             checkCollision(pipe);
 
-            // Increase score
             if (pipe.x + pipe.width === bird.x) {
                 score++;
             }
@@ -215,24 +194,25 @@ function update() {
         drawPipes();
         drawScore();
 
-        // Ground collision
-        if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
-            gameOver = true;
-        }
-
     } else {
+
         drawBird();
         drawPipes();
         drawScore();
-        drawGameOver();
+
+        ctx.fillStyle = "red";
+        ctx.font = "30px Arial";
+        ctx.fillText("Game Over", 120, 300);
+        ctx.font = "18px Arial";
+        ctx.fillText("Press Enter to Restart", 90, 340);
     }
 
     requestAnimationFrame(update);
 }
 
 
-// ==============================
+// ===============================
 // 🚀 Start Game
-// ==============================
+// ===============================
 
 update();

@@ -76,11 +76,11 @@ function drawBird() {
     ctx.fillStyle = "yellow";
     ctx.beginPath();
     ctx.arc(
-        bird.x + bird.width / 2,
-        bird.y + bird.height / 2,
-        bird.width / 2,
+        bird.x + bird.width / 7,
+        bird.y + bird.height / 7,
+        bird.width / 7,
         0,
-        Math.PI * 2
+        Math.PI * 7
     );
     ctx.fill();
 }
@@ -109,7 +109,7 @@ function drawPipes() {
 function createPipe() {
 
     let minHeight = 50;  
-    let maxHeight = canvas.height - gap - 50;
+    let maxHeight = canvas.height - gap - 170;
 
     let topHeight = Math.floor(
         Math.random() * (maxHeight - minHeight) + minHeight

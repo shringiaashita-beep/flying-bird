@@ -38,14 +38,11 @@ let gameOver = false;
 // 4️⃣ Keyboard Controls
 // ===============================
 
+// ✅ CORRECT
 document.addEventListener("keydown", function (e) {
-
-    // Jump
     if ((e.code === "Space" || e.key === " ") && !gameOver) {
         bird.velocity = bird.lift;
     }
-
-    // Restart
     if (e.code === "Enter" && gameOver) {
         restartGame();
     }

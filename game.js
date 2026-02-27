@@ -122,7 +122,7 @@ function checkCollision(pipe) {
         bird.x + bird.width > pipe.x &&
        (bird.y < pipe.top && bird.x + bird.width > pipe.x ||
  bird.y + bird.height > canvas.height - pipe.bottom && bird.x + bird.width > pipe.x)
-        }
+        
         gameOver = true;
     }
 }
@@ -180,12 +180,8 @@ function update() {
         // Move pipes
         pipes.forEach(pipe => {
             pipe.x -= 2;
-            checkCollision(pipe);
-pipes.forEach(pipe => {
-    pipe.x -= 2;
-    checkCollision(pipe);
-    
-    if (!pipe.scored && pipe.x + pipe.width < bird.x) {
+            checkCollision(pipe);   
+   if (!pipe.scored && pipe.x + pipe.width < bird.x) {
         score++;
         pipe.scored = true;
     }

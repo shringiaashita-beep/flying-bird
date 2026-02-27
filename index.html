@@ -1,80 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Flying Bird Game</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to bottom, #4facfe, #00f2fe);
-        }
-
-        canvas {
-            border: 3px solid black;
-            background: #70c5ce;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Link CSS File -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<canvas id="gameCanvas" width="1000" height="1200"></canvas>
+    <!-- Game Title -->
+    <h1 class="title">🐦 Flying Bird Game</h1>
 
-<script>
-window.onload = function() {
+    <!-- Canvas (Game Engine Area) -->
+    <canvas id="gameCanvas"></canvas>
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+    <!-- Instructions -->
+    <div class="instructions">
+        <p>Press <b>Space</b> to Jump</p>
+        <p>Press <b>Enter</b> to Restart</p>
+    </div>
 
-let birdY = canvas.height / 2;
-let velocity = 0;
-let gravity = 0.7;
-let lift = -12;
-
-function drawBird() {
-    ctx.fillStyle = "yellow";
-    ctx.beginPath();
-    ctx.arc(100, birdY, 20, 0, Math.PI * 2);
-    ctx.fill();
-}
-
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    velocity += gravity;
-    birdY += velocity;
-
-    if (birdY > canvas.height - 20) {
-        birdY = canvas.height - 20;
-        velocity = 0;
-    }
-
-    if (birdY < 20) {
-        birdY = 20;
-        velocity = 0;
-    }
-
-    drawBird();
-    requestAnimationFrame(update);
-}
-
-document.addEventListener("keydown", function(e) {
-    if (e.code === "Space") {
-        velocity = lift;
-    }
-});
-
-document.addEventListener("click", function() {
-    velocity = lift;
-});
-
-update();
-
-}
-</script>
+    <!-- Link JavaScript File -->
+    <script src="game.js"></script>
 
 </body>
 </html>
-
